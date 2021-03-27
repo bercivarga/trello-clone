@@ -1,0 +1,15 @@
+.Dashboard {
+	padding: 40px;
+}
+
+.Header {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.Columns {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+}
