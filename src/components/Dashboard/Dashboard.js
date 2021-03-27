@@ -6,6 +6,8 @@ import { FaThList } from 'react-icons/fa';
 import classes from './Dashboard.module.css';
 
 export default function Dashboard() {
+	// allow for a maximum of five columns in total in the early stages of development
+
 	return (
 		<div className={classes.Dashboard}>
 			<div className={classes.Header}>
