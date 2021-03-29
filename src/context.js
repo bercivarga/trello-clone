@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useContext } from 'react';
 import initialData from './initialData';
 
 const AppContext = React.createContext();

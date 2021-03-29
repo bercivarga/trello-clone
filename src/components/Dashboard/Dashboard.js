@@ -1,25 +1,36 @@
 import React from 'react';
 import CardColumn from '../CardColumn/CardColumn';
 import { FaThList } from 'react-icons/fa';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useGlobalContext } from '../../context';
 
 import classes from './Dashboard.module.css';
 
 export default function Dashboard() {
-	// allow for a maximum of five columns in total in the early stages of development
-	// https://egghead.io/lessons/react-persist-list-reordering-with-react-beautiful-dnd-using-the-ondragend-callback
-
 	const { data, setData } = useGlobalContext();
 
 	const onDragEnd = (result) => {
-		const { destination, source, draggableId } = result;
+		const { destination, source, draggableId, type } = result;
 
 		if (!destination) {
 			return;
 		}
 
 		if (destination.droppableId === source.droppableId && destination.index === source.index) {
+			return;
+		}
+
+		if (type === 'column') {
+			const newColumnOrder = Array.from(data.columnOrder);
+			newColumnOrder.splice(source.index, 1);
+			newColumnOrder.splice(destination.index, 0, draggableId);
+
+			const newState = {
+				...data,
+				columnOrder: newColumnOrder
+			};
+
+			setData(newState);
 			return;
 		}
 
@@ -84,15 +95,20 @@ export default function Dashboard() {
 				<FaThList style={{ marginRight: '20px', width: '30px', height: '30px' }} />
 				<h1>Dashboard</h1>
 			</div>
-			<div className={classes.Columns}>
-				<DragDropContext onDragEnd={onDragEnd}>
-					{data.columnOrder.map((c) => {
-						const column = data.columns[c];
-						const tasks = data.columns[c].taskIds.map((taskId) => data.tasks[taskId]);
-						return <CardColumn key={c.id} column={column} tasks={tasks} />;
-					})}
-				</DragDropContext>
-			</div>
+			<DragDropContext onDragEnd={onDragEnd}>
+				<Droppable droppableId="all-columns" direction="horizontal" type="column">
+					{(provided) => (
+						<div className={classes.Columns} ref={provided.innerRef} {...provided.droppableProps}>
+							{data.columnOrder.map((c, index) => {
+								const column = data.columns[c];
+								const tasks = data.columns[c].taskIds.map((taskId) => data.tasks[taskId]);
+								return <CardColumn key={column.id} column={column} tasks={tasks} index={index} />;
+							})}
+							{provided.placeholder}
+						</div>
+					)}
+				</Droppable>
+			</DragDropContext>
 		</div>
 	);
 }
