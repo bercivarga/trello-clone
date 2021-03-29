@@ -1,15 +1,41 @@
 import React from 'react';
-import { useGlobalContext } from '../../context';
-import { FaCheck, FaTimes } from 'react-icons/fa';
+import { FaTimes } from 'react-icons/fa';
+import { Draggable } from 'react-beautiful-dnd';
+import styled from 'styled-components';
 
-import classes from './ToDoCard.module.css';
+export default function ToDoCard({ content, index, passedId }) {
+	const Container = styled.div`
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: auto;
+		padding: 4px 10px 4px 10px;
+		background-color: ${(props) => (props.isDragging ? '#efeae1' : 'white')};
+		border-radius: 4px;
+		margin-bottom: 10px;
+		border: 2px solid transparent;
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
 
-export default function ToDoCard({ content }) {
+		&:hover {
+			background-color: #efeae1;
+		}
+	`;
+
 	return (
-		<div className={classes.ToDoCard}>
-			<p>{content}</p>
-			<FaCheck style={{ marginRight: '10px' }} />
-			<FaTimes />
-		</div>
+		<Draggable draggableId={passedId} index={index}>
+			{(provided, snapshot) => (
+				<Container
+					{...provided.draggableProps}
+					{...provided.dragHandleProps}
+					ref={provided.innerRef}
+					isDragging={snapshot.isDragging}
+				>
+					<p>{content}</p>
+					<FaTimes style={{ cursor: 'pointer' }} />
+				</Container>
+			)}
+		</Draggable>
 	);
 }
