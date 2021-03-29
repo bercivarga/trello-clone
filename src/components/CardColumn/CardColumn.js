@@ -10,7 +10,7 @@ export default function CardColumn({ column, tasks }) {
 		<div className={classes.CardColumn}>
 			<h2 className={classes.ColumnName}>{column.title}</h2>
 			<div className={classes.Divider} />
-			<Droppable droppableId={column.title}>
+			<Droppable droppableId={column.id}>
 				{(provided) => (
 					<div ref={provided.innerRef} {...provided.droppableProps}>
 						{tasks.map((t, index) => {

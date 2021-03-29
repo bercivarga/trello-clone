@@ -6,7 +6,7 @@ const AppContext = React.createContext();
 export default function AppProvider({ children }) {
 	const [ data, setData ] = useState(initialData);
 
-	return <AppContext.Provider value={{ data }}>{children}</AppContext.Provider>;
+	return <AppContext.Provider value={{ data, setData }}>{children}</AppContext.Provider>;
 }
 
 export const useGlobalContext = () => {

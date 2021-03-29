@@ -9,10 +9,8 @@
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
-	transition: all .1s linear;
 }
 
 .ToDoCard:hover {
 	border: 2px solid rgba(199, 199, 199, 0.5);
-	transition: all .1s linear;
 }
