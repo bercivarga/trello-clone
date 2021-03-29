@@ -15,8 +15,7 @@ export default function ToDoCard({ content, index, passedId }) {
 					ref={provided.innerRef}
 				>
 					<p>{content}</p>
-					<FaCheck style={{ marginRight: '10px' }} />
-					<FaTimes />
+					<FaTimes style={{ cursor: 'pointer' }} />
 				</div>
 			)}
 		</Draggable>
