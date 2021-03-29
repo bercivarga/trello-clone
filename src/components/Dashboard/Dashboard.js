@@ -46,6 +46,7 @@ export default function Dashboard() {
 			};
 
 			setData(newState);
+			return;
 		}
 
 		// Moving to another column
