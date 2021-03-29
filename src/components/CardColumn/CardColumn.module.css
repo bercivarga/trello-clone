@@ -1,7 +1,9 @@
 .CardColumn {
-	height: auto;
+	flex-grow: 1;
+	min-height: 100px;
 	width: 300px;
-	min-width: 300px;
+	min-width: 100px;
+	max-width: 300px;
 	background-color: rgb(247, 247, 247);
 	border-radius: 8px;
 	padding: 20px;
