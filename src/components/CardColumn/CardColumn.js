@@ -1,19 +1,25 @@
 import React from 'react';
 import { useGlobalContext } from '../../context';
 import ToDoCard from '../ToDoCard/ToDoCard';
+import { Droppable } from 'react-beautiful-dnd';
 
 import classes from './CardColumn.module.css';
 
-export default function CardColumn() {
-	const { todos } = useGlobalContext();
-
+export default function CardColumn({ column, tasks }) {
 	return (
 		<div className={classes.CardColumn}>
-			<h2 className={classes.ColumnName}>Column name</h2>
+			<h2 className={classes.ColumnName}>{column.title}</h2>
 			<div className={classes.Divider} />
-			{todos.map((t) => {
-				return <ToDoCard key={t} content={t} />;
-			})}
+			<Droppable droppableId={column.title}>
+				{(provided) => (
+					<div ref={provided.innerRef} {...provided.droppableProps}>
+						{tasks.map((t, index) => {
+							return <ToDoCard key={t.id} passedId={t.id} content={t.content} index={index} />;
+						})}
+						{provided.placeholder}
+					</div>
+				)}
+			</Droppable>
 		</div>
 	);
 }

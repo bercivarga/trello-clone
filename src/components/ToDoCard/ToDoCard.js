@@ -1,15 +1,24 @@
 import React from 'react';
-import { useGlobalContext } from '../../context';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import { Draggable } from 'react-beautiful-dnd';
 
 import classes from './ToDoCard.module.css';
 
-export default function ToDoCard({ content }) {
+export default function ToDoCard({ content, index, passedId }) {
 	return (
-		<div className={classes.ToDoCard}>
-			<p>{content}</p>
-			<FaCheck style={{ marginRight: '10px' }} />
-			<FaTimes />
-		</div>
+		<Draggable draggableId={passedId} index={index}>
+			{(provided) => (
+				<div
+					className={classes.ToDoCard}
+					{...provided.draggableProps}
+					{...provided.dragHandleProps}
+					ref={provided.innerRef}
+				>
+					<p>{content}</p>
+					<FaCheck style={{ marginRight: '10px' }} />
+					<FaTimes />
+				</div>
+			)}
+		</Draggable>
 	);
 }
