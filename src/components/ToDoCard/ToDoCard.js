@@ -19,7 +19,7 @@ export default function ToDoCard({ content, index, passedId }) {
 		-webkit-box-sizing: border-box;
 
 		&:hover {
-			background-color: #faf9f6;
+			background-color: #efeae1;
 		}
 	`;
 
