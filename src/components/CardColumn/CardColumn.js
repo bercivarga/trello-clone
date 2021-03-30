@@ -29,10 +29,12 @@ const Form = styled.form`
 `;
 
 const Input = styled.input`
-	width: 98%;
+	width: calc(98% - 10px);
 	height: 24px;
-	border: 1px solid grey;
+	border: 1px solid #e8e8e8;
 	border-radius: 4px;
+	outline: none;
+	padding-left: 10px;
 `;
 
 export default function CardColumn({ column, tasks, index }) {
@@ -105,7 +107,7 @@ export default function CardColumn({ column, tasks, index }) {
 							</TaskList>
 						)}
 					</Droppable>
-					<NewTaskBtn onClick={changeShowForm}>Add new task +</NewTaskBtn>
+					<NewTaskBtn onClick={changeShowForm}>{`Add new task ${showForm ? '-' : '+'}`}</NewTaskBtn>
 					<Form onSubmit={handleSubmit} style={{ display: `${showForm ? 'block' : 'none'}` }}>
 						<Input type="text" name="newtask" onChange={(e) => setNewTask(e.target.value)} />
 					</Form>

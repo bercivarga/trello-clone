@@ -11,7 +11,7 @@ const Container = styled.div`
 	align-items: center;
 	height: auto;
 	padding: 4px 10px 4px 10px;
-	background-color: ${(props) => (props.isDragging ? '#efeae1' : 'white')};
+	background-color: ${(props) => (props.isDragging ? '#e8e8e8' : 'white')};
 	border-radius: 4px;
 	margin-bottom: 10px;
 	border: 2px solid transparent;
@@ -20,7 +20,7 @@ const Container = styled.div`
 	-webkit-box-sizing: border-box;
 
 	&:hover {
-		background-color: #efeae1;
+		background-color: #e8e8e8;
 	}
 `;
 
