@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ToDoCard from '../ToDoCard/ToDoCard';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
@@ -40,11 +40,45 @@ const Input = styled.input`
 export default function CardColumn({ column, tasks, index }) {
 	const [ showForm, setShowForm ] = useState(false);
 	const [ newTask, setNewTask ] = useState('');
+	const [ toggle, setToggle ] = useState(false);
+	const [ newName, setNewName ] = useState('');
+
+	const inputEl = useRef(null);
 
 	const { data, setData } = useGlobalContext();
 
+	useEffect(
+		() => {
+			if (toggle) {
+				inputEl.current.focus();
+			}
+		},
+		[ toggle ]
+	);
+
 	const changeShowForm = () => {
 		setShowForm(!showForm);
+	};
+
+	const handleNameChange = (e) => {
+		e.preventDefault();
+
+		if (newName === '') {
+			setToggle(false);
+			return;
+		}
+
+		const newColumns = Object(data.columns);
+		newColumns[column.id].title = newName;
+
+		const newState = {
+			...data,
+			columns: newColumns
+		};
+
+		setData(newState);
+		setToggle(false);
+		return;
 	};
 
 	const handleSubmit = (e) => {
@@ -80,10 +114,49 @@ export default function CardColumn({ column, tasks, index }) {
 	return (
 		<Draggable draggableId={column.id} index={index}>
 			{(provided) => (
-				<div className={classes.CardColumn} ref={provided.innerRef} {...provided.draggableProps}>
-					<h2 className={classes.ColumnName} {...provided.dragHandleProps}>
-						{column.title}
-					</h2>
+				<div
+					className={classes.CardColumn}
+					ref={provided.innerRef}
+					{...provided.draggableProps}
+					onMouseOut={() => setToggle(false)}
+				>
+					{toggle ? (
+						<Form onSubmit={(e) => handleNameChange(e)} style={{ marginBottom: '0' }}>
+							<Input
+								ref={inputEl}
+								type="text"
+								value={newName}
+								name="newName"
+								onChange={(e) => setNewName(e.target.value)}
+								style={{
+									height: '68px',
+									padding: '0',
+									backgroundColor: 'transparent',
+									border: 'none',
+									fontWeight: '700',
+									fontSize: '1.5em',
+									boxSizing: 'border-box'
+								}}
+								onKeyDown={(event) => {
+									if (event.key === 'Escape') {
+										setToggle(false);
+										event.preventDefault();
+										event.stopPropagation();
+									}
+								}}
+							/>
+						</Form>
+					) : (
+						<h2
+							className={classes.ColumnName}
+							{...provided.dragHandleProps}
+							onClick={() => {
+								setToggle(true);
+							}}
+						>
+							{column.title}
+						</h2>
+					)}
 					<div className={classes.Divider} />
 					<Droppable droppableId={column.id} type="task">
 						{(provided, snapshot) => (
@@ -109,7 +182,12 @@ export default function CardColumn({ column, tasks, index }) {
 					</Droppable>
 					<NewTaskBtn onClick={changeShowForm}>{`Add new task ${showForm ? '-' : '+'}`}</NewTaskBtn>
 					<Form onSubmit={handleSubmit} style={{ display: `${showForm ? 'block' : 'none'}` }}>
-						<Input type="text" name="newtask" onChange={(e) => setNewTask(e.target.value)} />
+						<Input
+							type="text"
+							name="newtask"
+							value={newTask}
+							onChange={(e) => setNewTask(e.target.value)}
+						/>
 					</Form>
 				</div>
 			)}
