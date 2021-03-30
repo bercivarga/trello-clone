@@ -91,7 +91,15 @@ export default function CardColumn({ column, tasks, index }) {
 								isDraggingOver={snapshot.isDraggingOver}
 							>
 								{tasks.map((t, index) => {
-									return <ToDoCard key={t.id} passedId={t.id} content={t.content} index={index} />;
+									return (
+										<ToDoCard
+											key={t.id}
+											passedId={t.id}
+											content={t.content}
+											index={index}
+											columnId={column.id}
+										/>
+									);
 								})}
 								{provided.placeholder}
 							</TaskList>
