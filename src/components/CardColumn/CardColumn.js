@@ -2,10 +2,27 @@ import React, { useState, useRef, useEffect } from 'react';
 import ToDoCard from '../ToDoCard/ToDoCard';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
+import { FaTrashAlt } from 'react-icons/fa';
 
 import { useGlobalContext } from '../../context';
 
 import classes from './CardColumn.module.css';
+
+const TitleContainer = styled.div`
+	display: flex;
+	flex-direction: row;
+	width: calc(100% - 20px);
+	justify-content: space-between;
+	align-items: center;
+`;
+
+const DeleteIcon = styled.div`
+	cursor: pointer;
+
+	&:hover {
+		color: #e3242b;
+	}
+`;
 
 const TaskList = styled.div`
 	background-color: ${(props) => (props.isDraggingOver ? 'rgb(225, 225, 225)' : 'inherit')};
@@ -111,6 +128,22 @@ export default function CardColumn({ column, tasks, index }) {
 		return;
 	};
 
+	const handleDeleteColumn = () => {
+		const newColumnOrder = Array.from(data.columnOrder);
+		newColumnOrder.splice(index, 1);
+
+		const newColumns = Object(data.columns);
+		delete newColumns[index];
+
+		const newState = {
+			...data,
+			columns: newColumns,
+			columnOrder: newColumnOrder
+		};
+		setData(newState);
+		return;
+	};
+
 	return (
 		<Draggable draggableId={column.id} index={index}>
 			{(provided) => (
@@ -147,15 +180,21 @@ export default function CardColumn({ column, tasks, index }) {
 							/>
 						</Form>
 					) : (
-						<h2
-							className={classes.ColumnName}
-							{...provided.dragHandleProps}
-							onClick={() => {
-								setToggle(true);
-							}}
-						>
-							{column.title}
-						</h2>
+						<TitleContainer>
+							<h2
+								className={classes.ColumnName}
+								{...provided.dragHandleProps}
+								onClick={() => {
+									setToggle(true);
+								}}
+								style={{ minWidth: '80%' }}
+							>
+								{column.title}
+							</h2>
+							<DeleteIcon onClick={handleDeleteColumn}>
+								<FaTrashAlt />
+							</DeleteIcon>
+						</TitleContainer>
 					)}
 					<div className={classes.Divider} />
 					<Droppable droppableId={column.id} type="task">

@@ -24,6 +24,14 @@ const Container = styled.div`
 	}
 `;
 
+const DeleteIcon = styled.div`
+	cursor: pointer;
+
+	&:hover {
+		color: #e3242b;
+	}
+`;
+
 export default function ToDoCard({ content, index, passedId, columnId }) {
 	const { data, setData } = useGlobalContext();
 
@@ -57,7 +65,9 @@ export default function ToDoCard({ content, index, passedId, columnId }) {
 					isDragging={snapshot.isDragging}
 				>
 					<p>{content}</p>
-					<FaTimes style={{ cursor: 'pointer' }} onClick={() => handleTaskDelete(passedId)} />
+					<DeleteIcon onClick={() => handleTaskDelete(passedId)}>
+						<FaTimes />
+					</DeleteIcon>
 				</Container>
 			)}
 		</Draggable>
