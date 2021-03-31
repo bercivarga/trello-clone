@@ -3,11 +3,62 @@ import CardColumn from '../CardColumn/CardColumn';
 import { FaThList } from 'react-icons/fa';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useGlobalContext } from '../../context';
+import styled from 'styled-components';
 
 import classes from './Dashboard.module.css';
 
+const NewColumnBtn = styled.div`
+	width: 280px;
+	min-width: 280px;
+	height: 70px;
+	min-height: 70px;
+	border-radius: 8px;
+	background-color: #fff;
+	padding-left: 20px;
+	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+
+	&:hover {
+		background-color: #e8e8e8;
+	}
+`;
+
+const Spacer = styled.div`
+	width: 40px;
+	height: 70px;
+	min-width: 40px;
+	min-height: 70px;
+	max-width: 40px;
+	max-height: 70px;
+	display: inline-block;
+`;
+
 export default function Dashboard() {
 	const { data, setData } = useGlobalContext();
+
+	const handleAddNewColumn = (n) => {
+		const newColumnName = String(n);
+
+		const newColumnOrder = Array.from(data.columnOrder);
+		newColumnOrder.push(newColumnName);
+
+		const newColumns = Object(data.columns);
+		newColumns[newColumnName] = {
+			id: newColumnName,
+			title: 'New column',
+			taskIds: []
+		};
+
+		const newState = {
+			...data,
+			columns: newColumns,
+			columnOrder: newColumnOrder
+		};
+		setData(newState);
+		console.log(newState);
+		return;
+	};
 
 	const onDragEnd = (result) => {
 		const { destination, source, draggableId, type } = result;
@@ -92,8 +143,11 @@ export default function Dashboard() {
 	return (
 		<div className={classes.Dashboard}>
 			<div className={classes.Header}>
-				<FaThList style={{ marginRight: '20px', width: '30px', height: '30px' }} />
-				<h1>Dashboard</h1>
+				<div className={classes.Logo}>
+					<FaThList style={{ marginRight: '20px', width: '30px', height: '30px' }} />
+					<h1>Dashboard</h1>
+				</div>
+				<div style={{ width: '100vw', height: '4px', backgroundColor: 'rgb(204, 182, 255)' }} />
 			</div>
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="all-columns" direction="horizontal" type="column">
@@ -105,6 +159,10 @@ export default function Dashboard() {
 								return <CardColumn key={column.id} column={column} tasks={tasks} index={index} />;
 							})}
 							{provided.placeholder}
+							<NewColumnBtn onClick={() => handleAddNewColumn(Math.floor(Math.random() * 10000))}>
+								<h2>Add new column +</h2>
+							</NewColumnBtn>
+							<Spacer />
 						</div>
 					)}
 				</Droppable>

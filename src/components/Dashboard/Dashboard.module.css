@@ -1,16 +1,36 @@
 .Dashboard {
-	padding: 40px;
+	padding: 0 40px 40px 40px;
 }
 
 .Header {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	margin-bottom: 10px;
+	justify-content: center;
+	margin-bottom: 60px;
+	background-color: rgb(168, 133, 250);
+	width: 100vw;
+	margin-left: -40px;
+	color: white;
+}
+
+.Logo {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 
 .Columns {
+	width: calc(100vw - 80px);
+	height: auto;
+	padding: 40px;
+	padding-bottom: 80px;
+	margin-top: -40px;
+	margin-left: -40px;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: flex-start;
+	overflow: scroll;
 }
