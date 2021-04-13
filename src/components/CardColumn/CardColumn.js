@@ -47,7 +47,8 @@ const Form = styled.form`
 
 const Input = styled.input`
 	width: calc(98% - 10px);
-	height: 24px;
+	font-size: 16px;
+	height: 32px;
 	border: 1px solid #e8e8e8;
 	border-radius: 4px;
 	outline: none;
@@ -226,6 +227,7 @@ export default function CardColumn({ column, tasks, index }) {
 							name="newtask"
 							value={newTask}
 							onChange={(e) => setNewTask(e.target.value)}
+							placeholder="New task"
 						/>
 					</Form>
 				</div>
